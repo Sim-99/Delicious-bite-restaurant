@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<!-- The 'dark' class will be dynamically added to this html tag -->
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Delicious Bites Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  
+  <!-- 1. Tailwind CSS from CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+<style>
+    body {
+      font-family: 'Nunito', sans-serif;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+	    /* Custom scrollbar for the chatbox and FAQ buttons (Red Theme) */
+    #chatbox::-webkit-scrollbar, #faq-buttons::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+    }
+    #chatbox::-webkit-scrollbar-track, #faq-buttons::-webkit-scrollbar-track {
+        background: #fee2e2; /* Light Red */
+        border-radius: 10px;
+    }
+    #chatbox::-webkit-scrollbar-thumb, #faq-buttons::-webkit-scrollbar-thumb {
+        background: #dc2626; /* Vibrant Red */
+        border-radius: 10px;
+    }
+    #chatbox::-webkit-scrollbar-thumb:hover, #faq-buttons::-webkit-scrollbar-thumb:hover {
+        background: #b91c1c; /* Darker Red on Hover */
+    }
+</style>
+
+  <!-- 2. CRITICAL: Configure Tailwind to use 'class' for dark mode -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class' // This tells Tailwind to look for the 'dark' class on the html tag
+    }
+  </script>
+
+  <!-- Other links and styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <style>
+    body { font-family: 'Nunito', sans-serif; }
+  </style>
+
+  <!-- 3. JavaScript to prevent "flash" of incorrect theme -->
+  <script>
+    // This script runs before the page is rendered to apply the theme immediately.
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+</head>
+<!-- Add dark mode classes for background and text color -->
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-300 transition-colors duration-300">
+
+  <!-- Navbar with dark mode classes -->
+  <nav class="fixed top-0 left-0 w-full bg-white shadow-md z-50 dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      <a href="#hero" class="text-2xl font-bold text-red-600">Delicious Bites</a>
+      <div class="flex items-center space-x-6">
+        <ul class="hidden md:flex space-x-8 text-gray-700 dark:text-gray-200 font-semibold">
+          <li><a href="#hero" class="hover:text-red-600 dark:hover:text-red-500">Home</a></li>
+          <li><a href="#menu" class="hover:text-red-600 dark:hover:text-red-500">Menu</a></li>
+          <li><a href="#about" class="hover:text-red-600 dark:hover:text-red-500">About Us</a></li>
+		          <li><a href="#services" class="hover:text-red-600">Services</a></li>
+
+          <li><a href="#contact" class="hover:text-red-600 dark:hover:text-red-500">Contact</a></li>
+        </ul>
+        
+        <!-- 4. HTML for the Toggle Button -->
+        <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+          <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+          <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 10.607a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM3 11a1 1 0 100 2h1a1 1 0 100-2H3z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+        </button>
+
+        <a href="#reservation" class="hidden md:inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-5 rounded transition">
+          Book a Table
+        </a>
+      </div>
+    </div>
+  </nav>
+
+<!-- Hero Section -->
+  <section id="hero" class="relative h-screen bg-cover bg-center flex items-center" style="background-image: url('images/restaurant.jpg');">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-center px-6 text-white relative z-10">
+      <div>
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+          Savor the Moment, <span class="text-red-500">Taste the Perfection</span>
+        </h1>
+        <p class="text-gray-200 mb-6 text-lg">
+          Discover a world of culinary excellence where every dish is a masterpiece.
+        </p>
+        <a href="#reservation" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
+          Reserve a Table
+        </a>
+      </div>
+      <div class="hidden md:flex justify-center">
+        <img src="images/Ribese.jpg" alt="Featured Dish"
+             class="w-96 h-96 object-cover rounded-full shadow-2xl border-4 border-white animate-float">
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Highlights -->
+  <section id="menu" class="max-w-7xl mx-auto px-6 py-16">
+    <h2 class="text-4xl font-bold mb-12 text-center text-gray-900">Our Menu Highlights</h2>
+    <div class="grid gap-10 md:grid-cols-3">
+      <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80" alt="Grilled Salmon" class="w-full h-56 object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p class="text-white text-lg font-semibold">View Details</p>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold mb-2">Grilled Salmon</h3>
+          <p class="text-gray-600 mb-4">A perfectly grilled salmon fillet, seasoned with a blend of exotic herbs and lemon.</p>
+          <span class="text-red-600 font-bold text-xl">R350</span>
+        </div>
+      </div>
+      <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+        <div class="relative">
+          <img src="images/Ribese.jpg" alt="Steak" class="w-full h-56 object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p class="text-white text-lg font-semibold">View Details</p>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold mb-2">Ribeye Steak</h3>
+          <p class="text-gray-600 mb-4">A succulent ribeye steak, cooked to your liking, and served with our signature sauce.</p>
+          <span class="text-red-600 font-bold text-xl">R470</span>
+        </div>
+      </div>
+      <div class="group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+        <div class="relative">
+          <img src="images/vege.jpg" alt="Vegan Salad" class="w-full h-56 object-cover" />
+          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <p class="text-white text-lg font-semibold">View Details</p>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-2xl font-semibold mb-2">Vegan Salad</h3>
+          <p class="text-gray-600 mb-4">A vibrant and refreshing salad with a mix of organic vegetables and a zesty vinaigrette.</p>
+          <span class="text-red-600 font-bold text-xl">R190</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Menu Section -->
+  <section class="max-w-7xl mx-auto px-6 pb-10">
+    <h2 class="text-3xl font-bold mb-10 text-center">Full Menu</h2>
+    <div class="grid gap-12 md:grid-cols-2">
+      <!-- Starters -->
+      <div>
+        <h3 class="text-2xl font-semibold mb-4 border-b-2 border-red-600 pb-2">Starters</h3>
+        <ul class="space-y-6">
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Bruschetta</span>
+              <span class="text-red-600">R65.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Toasted bread topped with fresh tomatoes, basil, and olive oil.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Stuffed Mushrooms</span>
+              <span class="text-red-600">R88.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Mushrooms filled with cheese and herbs, baked to perfection.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Garlic Prawns</span>
+              <span class="text-red-600">R99.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Juicy prawns sautéed in garlic butter sauce.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Courses -->
+      <div>
+        <h3 class="text-2xl font-semibold mb-4 border-b-2 border-red-600 pb-2">Main Courses</h3>
+        <ul class="space-y-6">
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Spaghetti Carbonara</span>
+              <span class="text-red-600">R60.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Classic Italian pasta with creamy sauce, pancetta, and parmesan.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Grilled Chicken</span>
+              <span class="text-red-600">R77.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Marinated chicken breast grilled and served with seasonal veggies.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Vegetable Stir-fry</span>
+              <span class="text-red-600">R31.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Mixed vegetables stir-fried with soy-ginger sauce, served with rice.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Desserts -->
+      <div>
+        <h3 class="text-2xl font-semibold mb-4 border-b-2 border-red-600 pb-2">Desserts</h3>
+        <ul class="space-y-6">
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Chocolate Lava Cake</span>
+              <span class="text-red-600">R50.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Warm chocolate cake with molten center, served with vanilla ice cream.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Cheesecake</span>
+              <span class="text-red-600">R85.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Classic creamy cheesecake with berry compote.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Fruit Tart</span>
+              <span class="text-red-600">R111.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Seasonal fresh fruit on a buttery crust with custard filling.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Drinks -->
+      <div>
+        <h3 class="text-2xl font-semibold mb-4 border-b-2 border-red-600 pb-2">Drinks</h3>
+        <ul class="space-y-6">
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Red Wine (Glass)</span>
+              <span class="text-red-600">R115.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Selection of fine red wines from local vineyards.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Craft Beer</span>
+              <span class="text-red-600">R105.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Locally brewed beers with unique flavors.</p>
+          </li>
+          <li>
+            <div class="flex justify-between font-semibold">
+              <span>Fresh Lemonade</span>
+              <span class="text-red-600">R55.99</span>
+            </div>
+            <p class="text-gray-600 text-sm">Refreshing homemade lemonade with a hint of mint.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation Section -->
+  <section id="reservation" class="bg-gradient-to-b from-red-50 to-white py-20 px-6 max-w-4xl mx-auto text-center rounded-lg shadow-lg">
+    <h2 class="text-4xl font-extrabold text-gray-800 mb-6">Reserve Your Table</h2>
+    <p class="text-gray-600 mb-8 text-lg max-w-2xl mx-auto">
+      Secure your spot for an unforgettable dining experience.
+      Fresh flavors, cozy ambiance, and warm hospitality await you.
+    </p>
+    <a href="http://localhost/wordpress/index.php/book-a-table/"
+      class="inline-block bg-red-600 text-white px-8 py-4 rounded-full font-semibold shadow-md
+      hover:bg-red-700 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+      Reserve a Table
+    </a>
+  </section>
+
+  <!-- About Us & Chefs Section -->
+  <section id="about" class="bg-white py-16 px-6">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-4">About Us</h2>
+      <p class="max-w-3xl mx-auto text-gray-700 mb-12">
+        At Delicious Bites, our passion is to deliver unforgettable dining experiences.
+        Founded in 2012, we combine fresh ingredients, inspired recipes, and a warm atmosphere
+        to create moments worth savoring.
+      </p>
+
+      <h2 class="text-3xl font-bold mb-10 text-center">Our Chefs</h2>
+      <p class="max-w-3xl mx-auto text-center text-gray-700 mb-12">
+        Meet the culinary masters behind our delicious creations.
+      </p>
+
+      <div class="grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <div class="text-center" data-aos="fade-up">
+          <img src="images/chef.jpg" alt="Chef Babalwa" class="mx-auto rounded-full w-32 h-32 object-cover mb-4 shadow-lg" />
+          <h4 class="font-semibold text-lg">Chef Babalwa</h4>
+          <p class="text-gray-600 text-sm">Head Chef</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+          <img src="images/chef1.jpg" alt="Chef Liyabona" class="mx-auto rounded-full w-32 h-32 object-cover mb-4 shadow-lg" />
+          <h4 class="font-semibold text-lg">Chef Liyabona</h4>
+          <p class="text-gray-600 text-sm">Pastry Chef</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+          <img src="images/chef3.jpg" alt="Chef Simthembile" class="mx-auto rounded-full w-32 h-32 object-cover mb-4 shadow-lg" />
+          <h4 class="font-semibold text-lg">Chef Simthembile</h4>
+          <p class="text-gray-600 text-sm">Sous Chef</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+          <img src="images/chef4.jpg" alt="Chef Vincent Louw" class="mx-auto rounded-full w-32 h-32 object-cover mb-4 shadow-lg" />
+          <h4 class="font-semibold text-lg">Chef Vincent</h4>
+          <p class="text-gray-600 text-sm">Grill Specialist</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+          <img src="images/chef5.jpg" alt="Chef Alulutho" class="mx-auto rounded-full w-32 h-32 object-cover mb-4 shadow-lg" />
+		  
+          <h4 class="font-semibold text-lg">Chef Alulutho</h4>
+          <p class="text-gray-600 text-sm">Seafood Expert</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    once: true
+  });
+</script>
+  <!-- Our Services Section -->
+<section id="services" class="bg-gray-50 py-16 px-6">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-12">Our Services</h2>
+    <div class="grid gap-8 md:grid-cols-3">
+
+      <!-- Service Card 1 -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <!-- Front -->
+          <div class="flip-card-front bg-red-500 text-white flex flex-col items-center justify-center p-6 rounded-lg shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h8m-4-4v8m-7-2a9 9 0 1114 0 9 9 0 01-14 0z" />
+            </svg>
+            <h3 class="text-xl font-bold mb-2">Fine Dining</h3>
+            <p class="text-sm">Elegant meals in a luxurious setting.</p>
+          </div>
+          <!-- Back -->
+          <div class="flip-card-back bg-white text-gray-800 flex flex-col items-center justify-center p-6 rounded-lg shadow-lg">
+            <p>Enjoy a premium dining experience with gourmet dishes prepared by world-class chefs, perfect for special occasions.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 2 -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <!-- Front -->
+          <div class="flip-card-front bg-red-500 text-white flex flex-col items-center justify-center p-6 rounded-lg shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l6 6-6 6M21 7l-6 6 6 6" />
+            </svg>
+            <h3 class="text-xl font-bold mb-2">Catering</h3>
+            <p class="text-sm">We bring our kitchen to you.</p>
+          </div>
+          <!-- Back -->
+          <div class="flip-card-back bg-white text-gray-800 flex flex-col items-center justify-center p-6 rounded-lg shadow-lg">
+            <p>Our catering service is ideal for weddings, corporate events, and parties, offering a fully customized menu.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 3 -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <!-- Front -->
+          <div class="flip-card-front bg-red-500 text-white flex flex-col items-center justify-center p-6 rounded-lg shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3H5a2 2 0 00-2 2v16l7-3 7 3V5a2 2 0 00-2-2z" />
+            </svg>
+            <h3 class="text-xl font-bold mb-2">Takeaway</h3>
+            <p class="text-sm">Enjoy at home, fresh & hot.</p>
+          </div>
+          <!-- Back -->
+          <div class="flip-card-back bg-white text-gray-800 flex flex-col items-center justify-center p-6 rounded-lg shadow-lg">
+            <p>Order your favorite dishes online and collect them at your convenience — fresh, tasty, and ready to go.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Flip Card Styles -->
+<style>
+  .flip-card {
+    perspective: 1000px;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 0.5rem;
+  }
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+</style>
+
+
+  <!-- Testimonials Section -->
+<section id="testimonials" class="bg-gray-100 py-16">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold mb-12 text-gray-800">What Our Customers Say</h2>
+    <!-- Swiper container -->
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper pb-12">
+        
+        <!-- Testimonial 1 -->
+        <div class="swiper-slide bg-white shadow-lg rounded-lg p-6 max-w-sm mx-auto">
+          <p class="text-gray-600 italic mb-4">"Absolutely the best dining experience! The food was fresh and the staff were amazing."</p>
+          <div class="flex items-center justify-center">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-12 h-12 rounded-full mr-3">
+            <div><h4 class="font-semibold">Sarah M.</h4><p class="text-sm text-gray-500">Cape Town</p></div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="swiper-slide bg-white shadow-lg rounded-lg p-6 max-w-sm mx-auto">
+          <p class="text-gray-600 italic mb-4">"I can't get enough of their grilled salmon! Highly recommend."</p>
+          <div class="flex items-center justify-center">
+            <img src="https://randomuser.me/api/portraits/men/33.jpg" class="w-12 h-12 rounded-full mr-3">
+            <div><h4 class="font-semibold">James L.</h4><p class="text-sm text-gray-500">Bellville</p></div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="swiper-slide bg-white shadow-lg rounded-lg p-6 max-w-sm mx-auto">
+          <p class="text-gray-600 italic mb-4">"Friendly staff, cozy atmosphere, and the steak was cooked to perfection."</p>
+          <div class="flex items-center justify-center">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" class="w-12 h-12 rounded-full mr-3">
+            <div><h4 class="font-semibold">Lerato P.</h4><p class="text-sm text-gray-500">Durban</p></div>
+          </div>
+        </div>
+
+        <!-- Testimonial 4 -->
+        <div class="swiper-slide bg-white shadow-lg rounded-lg p-6 max-w-sm mx-auto">
+          <p class="text-gray-600 italic mb-4">"The best vegan salad I've ever had! Fresh, crisp, and full of flavor."</p>
+          <div class="flex items-center justify-center">
+            <img src="https://randomuser.me/api/portraits/men/22.jpg" class="w-12 h-12 rounded-full mr-3">
+            <div><h4 class="font-semibold">Michael K.</h4><p class="text-sm text-gray-500">Johannesburg</p></div>
+          </div>
+        </div>
+        
+        <!-- Add more testimonials as needed -->
+
+      </div>
+      <!-- Pagination dots -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+  <!-- Contact Us Section -->
+  <section id="contact" class="bg-white py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Contact Us</h2>
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div class="bg-gray-50 p-8 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-6">Send us a Message</h3>
+          <form action="#" method="POST">
+            <div class="mb-4">
+              <label for="name" class="block text-gray-700 font-semibold mb-2">Full Name</label>
+              <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+            </div>
+            <div class="mb-4">
+              <label for="email" class="block text-gray-700 font-semibold mb-2">Email Address</label>
+              <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+            </div>
+            <div class="mb-6">
+              <label for="message" class="block text-gray-700 font-semibold mb-2">Message</label>
+              <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required></textarea>
+            </div>
+            <button type="submit" class="w-full bg-red-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-600 transition-colors">
+              Send Message
+            </button>
+          </form>
+        </div>
+        <!-- Map and Details -->
+        <div class="bg-gray-50 p-8 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-6">Our Location</h3>
+          <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden mb-6">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3310.669111582274!2d18.63695061521169!3d-33.92361608064085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcc5a3ab3850a5d%3A0x87ba7c27d43a2e3D!2s001%20Hoffman%20St%2C%20Bellville%20South%2C%20Cape%20Town%2C%207530!5e0!3m2!1sen!2sza!4v1678886456935!5m2!1sen!2sza" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+          <div class="space-y-4 text-gray-700">
+            <p><i class="fas fa-map-marker-alt mr-3 text-red-500"></i>001 Hoffman Street, Bellville South, Cape Town</p>
+            <p><i class="fas fa-phone-alt mr-3 text-red-500"></i>(+27) 785 262 3689</p>
+            <p><i class="fas fa-envelope mr-3 text-red-500"></i>info@deliciousbites.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ <!-- Chatbot Section (Red Theme) -->
+<section id="chatbot-section">
+    <!-- Chatbot Launcher Button -->
+    <button id="chat-launcher" class="fixed bottom-6 right-6 w-16 h-16 rounded-full bg-red-700 text-white shadow-lg hover:bg-red-800 transition-transform hover:scale-110 flex items-center justify-center z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+    </button>
+
+    <!-- Chatbot Widget -->
+    <div id="chat-widget" class="hidden fixed bottom-24 right-6 w-full max-w-sm h-[70vh] max-h-[500px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col transition-all duration-300 ease-in-out">
+        <!-- Header -->
+        <div id="chat-header" class="flex items-center justify-between p-4 bg-red-700 text-white rounded-t-2xl flex-shrink-0">
+            <div>
+                <h3 class="font-bold text-lg">Delicious Bite Assistant</h3>
+                <p class="text-xs text-red-100">Your guide to our restaurant</p>
+            </div>
+            <button id="chat-close-btn" class="p-1 rounded-full text-2xl font-light leading-none hover:bg-red-800">&times;</button>
+        </div>
+        
+        <!-- Messages -->
+        <div id="chatbox" class="flex-grow p-4 overflow-y-auto">
+            <!-- Messages will be appended here by JavaScript -->
+        </div>
+        
+        <!-- FAQ Buttons -->
+        <div id="faq-buttons" class="p-4 border-t border-neutral-200 flex-shrink-0 overflow-x-auto flex gap-2">
+            <!-- FAQ buttons will be generated by JavaScript -->
+        </div>
+
+        <!-- Input Form -->
+        <div class="p-4 border-t border-neutral-200 flex-shrink-0">
+            <form id="chat-form" class="flex items-center gap-2">
+                <input type="text" id="chat-input" class="w-full rounded-lg border-neutral-300 px-4 py-2 focus:border-red-600 focus:ring-red-600" placeholder="Type your question..." autocomplete="off">
+                <button type="submit" class="w-10 h-10 rounded-lg bg-red-700 text-white flex-shrink-0 flex items-center justify-center hover:bg-red-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+  <!-- Footer -->
+  <footer class="bg-black text-gray-300 w-full">
+    <div class="px-5 pt-20 pb-10 mx-auto max-w-7xl">
+      <div class="flex flex-wrap md:text-left text-center justify-between">
+        <!-- Company -->
+        <div>
+          <p class="text-red-500 font-bold text-lg mb-4">Company</p>
+          <ul class="space-y-2">
+            <li><a href="#about" class="hover:text-white">About us</a></li>
+            <li><a href="#contact" class="hover:text-white">Contact us</a></li>
+            <li><a href="#reservation" class="hover:text-white">Reservation</a></li>
+            <li><a href="#" class="hover:text-white">Privacy policy</a></li>
+            <li><a href="#" class="hover:text-white">Terms & conditions</a></li>
+          </ul>
+        </div>
+        <!-- Contact -->
+        <div>
+          <p class="text-red-500 font-bold text-lg mb-4">Contact</p>
+          <p>001 Hoffman Street, Bellville South, Cape Town</p>
+          <p>(+27) 785 262 3689</p>
+          <p>info@example.com</p>
+        </div>
+        <!-- Opening -->
+        <div>
+          <p class="text-red-500 font-bold text-lg mb-4">Opening</p>
+          <p>Mon - Sat: 09AM - 09PM</p>
+          <p>Sun: 10AM - 08PM</p>
+        </div>
+        <!-- Newsletter -->
+        <div>
+          <p class="text-red-500 font-bold text-lg mb-4">Newsletter</p>
+          <input type="email" placeholder="Your Email..." class="px-3 py-2 rounded text-black mb-2">
+          <button class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white">Subscribe</button>
+        </div>
+      </div>
+      <hr class="my-6 border-gray-700" />
+      <p class="text-center text-white">© 2025 Delicious Bites Restaurant. All Rights Reserved. Developed by Simthembile Capa with ❤️</p>
+    </div>
+  </footer>
+
+  <!-- 5. JavaScript for button logic (Place at the very end of <body>) -->
+  <script>
+    <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+  </script>
+  
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Swiper Config -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+        },
+      },
+    });
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    // Function to set the theme and icon state
+    function setTheme() {
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // We are in dark mode
+        themeToggleLightIcon.classList.remove('hidden');
+        themeToggleDarkIcon.classList.add('hidden');
+        document.documentElement.classList.add('dark');
+      } else {
+        // We are in light mode
+        themeToggleDarkIcon.classList.remove('hidden');
+        themeToggleLightIcon.classList.add('hidden');
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    // Set the initial theme when the page loads
+    setTheme();
+
+    themeToggleBtn.addEventListener('click', function() {
+      // Toggle the 'dark' class on the HTML element
+      document.documentElement.classList.toggle('dark');
+
+      // Update localStorage with the new theme preference
+      if (document.documentElement.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+      
+      // Update the icon visibility
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+    });
+	 document.addEventListener('DOMContentLoaded', () => {
+        // --- CHATBOT ELEMENTS ---
+        const chatLauncher = document.getElementById('chat-launcher');
+        const chatWidget = document.getElementById('chat-widget');
+        const chatCloseBtn = document.getElementById('chat-close-btn');
+        const chatbox = document.getElementById('chatbox');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const faqButtonsContainer = document.getElementById('faq-buttons');
+
+        // --- RESTAURANT QUESTIONS & ANSWERS DATABASE ---
+        const qaPairs = {
+            "What are your hours?": "We are open Monday to Friday from 11:00 AM to 10:00 PM, and on Saturday and Sunday from 10:00 AM to 11:00 PM.",
+            "Do I need a reservation?": "Reservations are highly recommended, especially for weekends. You can book a table by calling us at (012) 345-6789 or by using the booking form on our 'Contact' page.",
+            "Where are you located?": "You can find Delicious Bite Restaurant at 123 Foodie Lane, Gourmet City, 5640. We are right next to the central park.",
+            "Do you have vegan options?": "Yes! We have a dedicated section on our menu for vegetarian and vegan dishes. Our chefs are also happy to accommodate dietary restrictions. Please ask your server for recommendations.",
+            "Can I see the menu?": "Certainly! You can view our full menu by clicking on the 'Menu' link in our main navigation. It features all our starters, mains, desserts, and drinks.",
+            "Do you offer delivery?": "We do! We offer delivery through our partners, Uber Eats and Mr D Food. You can place an order directly through their apps.",
+            "Is there parking available?": "Yes, we offer secure customer parking behind the restaurant. There is also street parking available along Foodie Lane.",
+            "What are today's specials?": "Our chefs create new specials daily based on the freshest ingredients. Please visit the 'Specials' section of our website or ask your server for today's unique offerings.",
+            "Can you host large groups?": "Absolutely. We can accommodate large groups and private events. Please contact our manager at (012) 345-6789 to discuss your requirements and book your event."
+        };
+
+        // --- FUNCTIONS ---
+        const toggleChatWidget = () => {
+            chatWidget.classList.toggle('hidden');
+            if (!chatWidget.classList.contains('hidden')) {
+                if(chatbox.children.length === 0) {
+                     appendMessage("Welcome to Delicious Bite! How can I help you? Feel free to ask or select a topic below.", 'bot');
+                }
+            }
+        };
+
+        const appendMessage = (text, sender) => {
+            const messageDiv = document.createElement('div');
+            const messageBubble = document.createElement('div');
+            messageBubble.textContent = text;
+            if (sender === 'user') {
+                messageDiv.className = 'flex justify-end mb-3';
+                // This class is now red
+                messageBubble.className = 'bg-red-700 text-white rounded-lg py-2 px-4 max-w-[85%]';
+            } else {
+                messageDiv.className = 'flex justify-start mb-3';
+                messageBubble.className = 'bg-neutral-200 text-neutral-800 rounded-lg py-2 px-4 max-w-[85%]';
+            }
+            messageDiv.appendChild(messageBubble);
+            chatbox.appendChild(messageDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        };
+
+        const getBotResponse = (userInput) => {
+            const lowerCaseInput = userInput.toLowerCase().trim();
+            for (const question in qaPairs) {
+                const keywords = question.toLowerCase().replace(/[?]/g,'').split(' ');
+                if (keywords.some(word => lowerCaseInput.includes(word) && word.length > 3)) {
+                    return qaPairs[question];
+                }
+            }
+            return "I'm not sure I understand. For specific inquiries, please feel free to call us at (012) 345-6789. Otherwise, you can try asking about our 'menu', 'hours', or 'reservations'.";
+        };
+
+        const handleUserInput = (inputValue) => {
+             if (!inputValue.trim()) return;
+            appendMessage(inputValue, 'user');
+            chatInput.value = '';
+
+            setTimeout(() => {
+                const botResponse = getBotResponse(inputValue);
+                appendMessage(botResponse, 'bot');
+            }, 600);
+        };
+
+        // --- INITIALIZATION ---
+        Object.keys(qaPairs).forEach(question => {
+            const button = document.createElement('button');
+            button.textContent = question.replace('?','');
+            button.className = 'flex-shrink-0 bg-neutral-100 text-neutral-700 text-sm font-medium py-1 px-3 rounded-full hover:bg-neutral-200';
+            button.addEventListener('click', () => {
+                handleUserInput(question);
+            });
+            faqButtonsContainer.appendChild(button);
+        });
+
+        // Event Listeners
+        chatLauncher.addEventListener('click', toggleChatWidget);
+        chatCloseBtn.addEventListener('click', toggleChatWidget);
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleUserInput(chatInput.value);
+        });
+    });
+  </script>
+
+</body>
+</html>
